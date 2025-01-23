@@ -1,24 +1,79 @@
-package com.example.project2;
+package com.example.project2.view.history;
 
-import android.os.Bundle;
+import android.content.Context;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
 
-import androidx.activity.EdgeToEdge;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
+import androidx.recyclerview.widget.RecyclerView;
 
-public class HistoryAdapter extends AppCompatActivity {
+import com.example.project2.R;
+import com.example.project2.main.ModelLaundry;
+import com.example.project2.utils.FunctionHelper;
+
+import java.util.List;
+
+public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.ViewHolder> {
+
+    List<ModelLaundry> modelInputList;
+    Context mContext;
+    HistoryAdapterCallback mAdapterCallback;
+
+    public HistoryAdapter(Context context, List<ModelLaundry> modelInputList, HistoryAdapterCallback adapterCallback) {
+        this.mContext = context;
+        this.modelInputList = modelInputList;
+        this.mAdapterCallback = adapterCallback;
+    }
+
+    public void setDataAdapter(List<ModelLaundry> items) {
+        modelInputList.clear();
+        modelInputList.addAll(items);
+    }
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        EdgeToEdge.enable(this);
-        setContentView(R.layout.list_item_history);
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
-            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
-            return insets;
-        });
+    public HistoryAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_item_history, parent, false);
+        return new HistoryAdapter.ViewHolder(view);
+    }
+
+    @Override
+    public void onBindViewHolder(HistoryAdapter.ViewHolder holder, int position) {
+        final ModelLaundry data = modelInputList.get(position);
+
+        holder.tvTitle.setText(data.getNama_jasa());
+        holder.tvDate.setText(FunctionHelper.getToday());
+        holder.tvItems.setText(data.getItems() + "Items");
+        holder.tvPrice.setText(FunctionHelper.rupiahFormat(data.getHarga()));
+    }
+
+    @Override
+    public int getItemCount() {
+        return modelInputList.size();
+    }
+
+    public class ViewHolder extends RecyclerView.ViewHolder {
+
+        public TextView tvTitle, tvDate, tvItems, tvPrice;
+        public ImageView imageDelete;
+
+        public ViewHolder(View itemView) {
+            super(itemView);
+            tvTitle = itemView.findViewById(R.id.tvTitle);
+            tvDate = itemView.findViewById(R.id.tvDate);
+            tvItems = itemView.findViewById(R.id.tvItems);
+            tvPrice = itemView.findViewById(R.id.tvPrice);
+            imageDelete = itemView.findViewById(R.id.imageDelete);
+
+            imageDelete.setOnClickListener(view -> {
+                ModelLaundry modelLaundry = modelInputList.get(getAdapterPosition());
+                mAdapterCallback.onDelete(modelLaundry);
+            });
+        }
+    }
+
+    public interface HistoryAdapterCallback {
+        void onDelete(ModelLaundry modelLaundry);
     }
 }

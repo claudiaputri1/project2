@@ -14,21 +14,33 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.Project2"
+        android:theme="@style/Theme.LaundryApps"
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
             android:name=".main.MainAdapter"
-            android:exported="false" />
+            android:exported="true" />
         <activity
             android:name=".main.MenuAdapter"
-            android:exported="false" />
+            android:exported="true" />
         <activity
             android:name=".view.history.HistoryAdapter"
-            android:exported="false" />
+            android:exported="true" />
         <activity
             android:name=".view.history.HistoryActivity"
-            android:exported="false" />
+            android:exported="true" />
+        <activity
+            android:name=".view.CuciBasahActivity"
+            android:exported="true" />
+        <activity
+            android:name=".view.DryCleanActivity"
+            android:exported="true" />
+        <activity
+            android:name=".view.SetrikaActivity"
+            android:exported="true" />
+        <activity
+            android:name=".view.PremiumWashActivity"
+            android:exported="true" />
         <activity
             android:name=".main.MainActivity"
             android:exported="true">
